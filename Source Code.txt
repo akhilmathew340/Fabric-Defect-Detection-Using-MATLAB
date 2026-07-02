@@ -1,0 +1,30 @@
+clc
+clear all
+close all
+warning off
+% Load the fabric image
+fabric = imread('burn-hole-illustration-white-fabric-39320363.jpg');
+figure;
+imshow(fabric);
+% Convert to grayscale
+gray_fabric = rgb2gray(fabric);
+figure;
+
+% Apply a median filter to remove noise
+filtered_fabric = medfilt2(gray_fabric, [5 5]);
+figure;
+
+% Threshold the image using Otsu's method
+level = graythresh(filtered_fabric);
+bw_fabric = imbinarize(filtered_fabric, level);
+figure;
+
+% Remove small objects (less than 1000 pixels) from the image
+cleaned_fabric = bwareaopen(bw_fabric, 1000);
+figure;
+
+%plotting the filtered images
+imshow(gray_fabric);
+imshow(filtered_fabric);
+imshow(bw_fabric);
+imshow(cleaned_fabric);
